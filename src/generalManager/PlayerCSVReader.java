@@ -1,4 +1,4 @@
-package worldCup;
+package generalManager;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,6 +11,7 @@ public class PlayerCSVReader {
     public static void main(String[] args) {
         System.out.println("Reading player data...");
 
+        // Change string to change CSV file being read
         String playerCSV = "Final_Raw_Data.csv";
 
         List<String[]> data = new ArrayList<>();

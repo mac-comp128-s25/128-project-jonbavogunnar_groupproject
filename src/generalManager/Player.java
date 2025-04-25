@@ -1,4 +1,4 @@
-package worldCup;
+package generalManager;
 
 public class Player {
 
@@ -58,10 +58,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player [team=" + team + ", name=" + name + ", nationality=" + nationality + ", position=" + position
-            + ", fifaRating=" + fifaRating + "]";
+        return name + ": ";
     }
-
-    
-    
 }
