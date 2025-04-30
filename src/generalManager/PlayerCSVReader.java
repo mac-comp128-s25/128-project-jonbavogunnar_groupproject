@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PlayerCSVReader {
+
     public static Map<String, Player> readPlayersFromCSV() throws Exception {
         System.out.println("Reading player data...");
 
@@ -37,7 +38,6 @@ public class PlayerCSVReader {
 
                 players.put(name, new Player(team, name, nationality, position, fifaRating));
             }
-
             return players;
             
         } catch (IOException e) {
