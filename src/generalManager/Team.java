@@ -1,13 +1,13 @@
 package generalManager;
 
-import java.util.List;
+import java.util.Map;
 
 public class Team {
     
     private String name;
-    private List<Player> players;
+    private Map<String, Player> players;
     
-    public Team(String name, List<Player> players) {
+    public Team(String name, Map<String, Player> players) {
         this.name = name;
         this.players = players;
     }
@@ -20,13 +20,19 @@ public class Team {
         this.name = name;
     }
 
-    public List<Player> getPlayers() {
+    public Map<String, Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(Map<String, Player> players) {
         this.players = players;
     }
 
-    
+    public int getFifaRating() {
+        int output = 0;
+        for(Map.Entry<String, Player> entry : players.entrySet()) {
+            output += entry.getValue().getFifaRating();
+        }
+        return output;
+    }
 }

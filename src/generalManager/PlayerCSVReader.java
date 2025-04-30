@@ -4,11 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerCSVReader {
-    public static void main(String[] args) {
+    public static Map<String, Player> readPlayersFromCSV() throws Exception {
         System.out.println("Reading player data...");
 
         // Change string to change CSV file being read
@@ -25,7 +26,7 @@ public class PlayerCSVReader {
             }
 
             System.out.println("\nCreating players...");
-            List<Player> players = new ArrayList<>();
+            Map<String, Player> players = new HashMap<String, Player>();
             for (int i = 1; i < data.size(); i++) {
                 String[] player = data.get(i);
                 String team = player[0];
@@ -34,16 +35,13 @@ public class PlayerCSVReader {
                 char position = player[3].charAt(0);
                 int fifaRating = Integer.valueOf(player[4]);
 
-                players.add(new Player(team, name, nationality, position, fifaRating));
+                players.put(name, new Player(team, name, nationality, position, fifaRating));
             }
 
-            for (Player player : players) {
-                System.out.println(player);
-            }
+            return players;
             
         } catch (IOException e) {
-            System.err.println("Error reading the player CSV file: " + e.getMessage());
-            e.printStackTrace();
+            throw new Exception("Error reading the player CSV file: " + e.getMessage(), e.getCause());
         }
     }
 }
