@@ -36,4 +36,8 @@ public class GeneralManager {
         canvas.add(searchBar);
         canvas.add(welcomText);
     }
+
+    public void playerHighlighting() {
+
+    }
 }
