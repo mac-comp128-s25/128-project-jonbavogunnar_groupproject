@@ -35,8 +35,10 @@ public class PlayerCSVReader {
                 String nationality = player[2];
                 char position = player[3].charAt(0);
                 int fifaRating = Integer.valueOf(player[4]);
+                int offFifaRating = Integer.valueOf(player[5]);
+                int defFifaRating = Integer.valueOf(player[6]);
 
-                players.put(name, new Player(team, name, nationality, position, fifaRating));
+                players.put(name, new Player(team, name, nationality, position, fifaRating, offFifaRating, defFifaRating));
             }
             return players;
             
