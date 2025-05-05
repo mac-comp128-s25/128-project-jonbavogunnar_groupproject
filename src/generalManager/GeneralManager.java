@@ -54,6 +54,7 @@ public class GeneralManager {
             int x = 60;
             int y = 50;
             for (String player : players.keySet()) {
+                player = player.toLowerCase();
                 if (player.contains(input)) {
                     Button playerButton = new Button(player);
                     playerButton.setCenter(x, y);
