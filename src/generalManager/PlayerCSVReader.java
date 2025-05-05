@@ -37,12 +37,12 @@ public class PlayerCSVReader {
                 int fifaRating = Integer.valueOf(player[4]);
                 int defFifaRating;
                 int offFifaRating;
-                if (Integer.valueOf(player[5]) == null) {
+                if (player[5] == null) {
                     defFifaRating = 0;
                 } else {
                     defFifaRating = Integer.valueOf(player[5]);
                 }
-                if (Integer.valueOf(player[6]) == null) {
+                if (player[6] == null) {
                     offFifaRating = 0;
                 } else {
                     offFifaRating = Integer.valueOf(player[6]);
