@@ -3,13 +3,14 @@ package generalManager;
 import java.util.Map;
 
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.ui.TextField;
 
 public class GeneralManager {
     private CanvasWindow canvas;
-    private Team team;
+    private GraphicsGroup buttonGroup;
     private Map<String, Player> players;
     private TextField searchBar;
 
@@ -34,11 +35,26 @@ public class GeneralManager {
         searchBar.setCenter(canvas.getWidth()/2, canvas.getHeight()/2);
         canvas.add(searchBar);
         canvas.add(welcomeText);
+        searchBar.onChange(input -> {
+            playerHighlighting(input.toLowerCase());
+        });
     }
 
-    public void playerHighlighting() {
-        if (searchBar.getText().length() >= 3) {
-            
+    public void playerHighlighting(String input) {
+        canvas.remove(buttonGroup);
+        buttonGroup = new GraphicsGroup();
+        canvas.add(buttonGroup);
+        if (input.length() >= 3){
+            int x = 60;
+            int y = 50;
+            for (String player : players.keySet()) {
+                if (player.contains(input)) {
+                    Button playerButton = new Button(player);
+                    playerButton.setCenter(x, y);
+                    y += 30;
+                    buttonGroup.add(playerButton);
+                }
+            }
         }
     }
     
