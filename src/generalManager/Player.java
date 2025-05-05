@@ -9,6 +9,8 @@ public class Player {
     private int fifaRating;
     private int offFifaRating;
     private int defFifaRating;
+    private int goal;
+    private int assist;
 
     public Player(String team, String name, String nationality, char position, int fifaRating, int offFifaRating, int defFifaRating) {
         this.team = team;
@@ -74,6 +76,22 @@ public class Player {
 
     public void setDefFifaRating(int defFifaRating) {
         this.defFifaRating = defFifaRating;
+    }
+
+    public int getGoal(){ 
+        return goal;
+    }
+
+    public void setGoal(int goal) {
+        this.goal = goal;
+    }
+
+    public int getAssist() {
+        return assist;
+    }
+
+    public void setAssist(int assist){
+        this.assist = assist;
     }
 
     @Override

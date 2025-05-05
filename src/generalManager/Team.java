@@ -1,5 +1,4 @@
 package generalManager;
-
 import java.util.Map;
 
 public class Team {
