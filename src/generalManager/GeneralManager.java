@@ -1,5 +1,7 @@
 package generalManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import edu.macalester.graphics.CanvasWindow;
@@ -13,6 +15,7 @@ public class GeneralManager {
     private GraphicsGroup buttonGroup;
     private Map<String, Player> players;
     private TextField searchBar;
+    private List<Player> teamList;
 
     public GeneralManager() {
         try {
@@ -25,6 +28,7 @@ public class GeneralManager {
         canvas.add(startButton);
         canvas.draw();
         startButton.onClick(() -> selectingScreen());
+        teamList = new ArrayList<>();
     }
 
     public void selectingScreen() {
@@ -35,6 +39,8 @@ public class GeneralManager {
         searchBar.setCenter(canvas.getWidth()/2, canvas.getHeight()/2);
         canvas.add(searchBar);
         canvas.add(welcomeText);
+        buttonGroup = new GraphicsGroup();
+        canvas.add(buttonGroup);
         searchBar.onChange(input -> {
             playerHighlighting(input.toLowerCase());
         });
