@@ -14,6 +14,11 @@ public class MatchEngine {
         double team1ScoreChance = (double) team1Off / (team2Def + 1);
         double team2ScoreChance = (double) team2Off / (team1Def + 1);
 
+        int team1Goals = (int)(Math.random() * team1ScoreChance);
+        int team2Goals = (int)(Math.random() * team2ScoreChance);
+        
+        generateStats(team1, team1Goals);
+        generateStats(team2, team2Goals);
 
     }
 
