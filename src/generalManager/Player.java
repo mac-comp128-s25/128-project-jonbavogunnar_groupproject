@@ -5,14 +5,14 @@ public class Player {
     private String team;
     private String name;
     private String nationality;
-    private char position;
+    private String position;
     private int fifaRating;
     private int offFifaRating;
     private int defFifaRating;
     private int goal;
     private int assist;
 
-    public Player(String team, String name, String nationality, char position, int fifaRating, int offFifaRating, int defFifaRating) {
+    public Player(String team, String name, String nationality, String position, int fifaRating, int offFifaRating, int defFifaRating) {
         this.team = team;
         this.name = name;
         this.nationality = nationality;
@@ -46,11 +46,11 @@ public class Player {
         this.nationality = nationality;
     }
 
-    public char getPosition() {
+    public String getPosition() {
         return position;
     }
 
-    public void setPosition(char position) {
+    public void setPosition(String position) {
         this.position = position;
     }
 

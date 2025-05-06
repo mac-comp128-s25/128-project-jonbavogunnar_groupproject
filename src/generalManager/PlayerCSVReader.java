@@ -33,16 +33,16 @@ public class PlayerCSVReader {
                 String team = player[0];
                 String name = player[1];
                 String nationality = player[2];
-                char position = player[3].charAt(0);
+                String position = player[3];
                 int fifaRating = Integer.valueOf(player[4]);
                 int defFifaRating;
                 int offFifaRating;
-                if (player[5] == null) {
+                if (player[5] == "") {
                     defFifaRating = 0;
                 } else {
                     defFifaRating = Integer.valueOf(player[5]);
                 }
-                if (player[6] == null) {
+                if (player[6] == "") {
                     offFifaRating = 0;
                 } else {
                     offFifaRating = Integer.valueOf(player[6]);
