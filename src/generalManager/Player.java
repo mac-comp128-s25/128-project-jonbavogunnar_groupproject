@@ -11,6 +11,7 @@ public class Player {
     private int defFifaRating;
     private int goal;
     private int assist;
+    private int playerVal;
 
     public Player(String team, String name, String nationality, char position, int fifaRating, int offFifaRating, int defFifaRating) {
         this.team = team;
@@ -20,6 +21,11 @@ public class Player {
         this.fifaRating = fifaRating;
         this.offFifaRating = offFifaRating;
         this.defFifaRating = defFifaRating;
+    }
+    
+    public int playerValue() {
+        
+        return playerVal;
     }
 
     public String getTeam() {
