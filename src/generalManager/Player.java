@@ -23,9 +23,16 @@ public class Player {
         this.defFifaRating = defFifaRating;
     }
     
-    public int playerValue() {
-        
-        return playerVal;
+    public int playerValue(Player player) {
+        if (player.position == "G") {
+            return player.fifaRating;
+        } else if (player.position == "D") {
+            return player.defFifaRating;
+        } else if (player.position == "M") {
+            return (player.offFifaRating + player.defFifaRating) / 2;
+        } else {
+            return player.offFifaRating;
+        }
     }
 
     public String getTeam() {
