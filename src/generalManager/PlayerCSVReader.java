@@ -48,7 +48,6 @@ public class PlayerCSVReader {
                     offFifaRating = Integer.valueOf(player[6]);
                 }
                 players.put(name, new Player(team, name, nationality, position, fifaRating, offFifaRating, defFifaRating));
-                System.out.println(name);
             }
             return players;
             

@@ -2,17 +2,14 @@ package generalManager;
 
 import java.util.Map;
 
-import edu.macalester.graphics.CanvasWindow;
-import edu.macalester.graphics.GraphicsGroup;
-import edu.macalester.graphics.GraphicsText;
-import edu.macalester.graphics.ui.Button;
-import edu.macalester.graphics.ui.TextField;
+import javax.swing.*;
+import java.awt.*;
 
 public class GeneralManager {
-    private CanvasWindow canvas;
-    private GraphicsGroup buttonGroup;
+    private JFrame canvas;
+    private JPanel buttonGroup;
     private Map<String, Player> players;
-    private TextField searchBar;
+    private JTextField searchBar;
 
     public GeneralManager() {
         try {
@@ -20,37 +17,51 @@ public class GeneralManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        canvas = new CanvasWindow("SoccerGM", 1920, 1080);
-        Button startButton = new Button("Play");
+        canvas = new JFrame("SoccerGM");
+        canvas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        canvas.setLayout(new FlowLayout());
+        JButton startButton = new JButton("Play");
         canvas.add(startButton);
-        canvas.draw();
-        startButton.onClick(() -> selectingScreen());
+        canvas.setSize(1920, 1080);
+        canvas.setVisible(true);
+        startButton.addActionListener(e -> selectingScreen());
     }
 
     public void selectingScreen() {
-        canvas.removeAll();
-        GraphicsText welcomeText = new GraphicsText("Welcome to the Game! \nSelect your team", canvas.getWidth()/2, canvas.getHeight()/4);
-        welcomeText.setFontSize(20);
-        searchBar = new TextField();
-        searchBar.setCenter(canvas.getWidth()/2, canvas.getHeight()/2);
-        canvas.add(searchBar);
-        canvas.add(welcomeText);
-        searchBar.onChange(input -> {
-            playerHighlighting(input.toLowerCase());
-        });
+        canvas.getContentPane().removeAll();
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        Label welcomeText = new Label("Welcome to the Game! \nSelect your team");
+        welcomeText.setFont(new Font("Arial", Font.PLAIN, 20));
+        welcomeText.setAlignment(Label.CENTER);
+
+        searchBar = new JTextField();
+        AutoSuggestUtils.attachAutoSuggest(searchBar, players);
+
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(welcomeText);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(searchBar);
+
+        canvas.getContentPane().add(panel);
+        canvas.revalidate();
+        canvas.repaint();
     }
 
     public void playerHighlighting(String input) {
         canvas.remove(buttonGroup);
-        buttonGroup = new GraphicsGroup();
+        buttonGroup = new JPanel();
         canvas.add(buttonGroup);
         if (input.length() >= 3){
             int x = 60;
             int y = 50;
             for (String player : players.keySet()) {
                 if (player.contains(input)) {
-                    Button playerButton = new Button(player);
-                    playerButton.setCenter(x, y);
+                    JButton playerButton = new JButton(player);
+                    playerButton.setLocation(x, y);
                     y += 30;
                     buttonGroup.add(playerButton);
                 }
