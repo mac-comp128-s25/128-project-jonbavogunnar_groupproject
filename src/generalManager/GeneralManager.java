@@ -1,5 +1,7 @@
 package generalManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
@@ -59,6 +61,7 @@ public class GeneralManager {
             int x = 60;
             int y = 50;
             for (String player : players.keySet()) {
+                player = player.toLowerCase();
                 if (player.contains(input)) {
                     JButton playerButton = new JButton(player);
                     playerButton.setLocation(x, y);
