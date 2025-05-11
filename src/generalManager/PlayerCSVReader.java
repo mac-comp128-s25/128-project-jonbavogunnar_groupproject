@@ -11,7 +11,6 @@ import java.util.Map;
 public class PlayerCSVReader {
 
     public static Map<String, Player> readPlayersFromCSV() throws Exception {
-        System.out.println("Reading player data...");
 
         // Change string to change CSV file being read
         String playerCSV = "Final_Raw_Data.csv";
@@ -26,7 +25,6 @@ public class PlayerCSVReader {
                 data.add(playerData);
             }
 
-            System.out.println("\nCreating players...");
             Map<String, Player> players = new HashMap<String, Player>();
             for (int i = 1; i < data.size(); i++) {
                 String[] player = data.get(i);

@@ -1,5 +1,6 @@
 package generalManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,9 @@ public class GeneralManager {
     private JPanel panel;
     private Map<String, Player> players;
     private JTextField searchBar;
-    private List<Team> teamList;
+    private JScrollPane playerScroll;
+    private JTextArea playerLog;
+    private List<Player> userTeam;
 
     public GeneralManager() {
         try {
@@ -46,18 +49,43 @@ public class GeneralManager {
         searchBar = new JTextField();
         AutoSuggestUtils.attachAutoSuggest(searchBar, players);
 
+        userTeam = new ArrayList<>();
+
+        playerLog = new JTextArea();
+        playerLog.setEditable(false);
+        playerLog.setLineWrap(true);
+        playerLog.setWrapStyleWord(true);
+
+        playerScroll = new JScrollPane(playerLog);
+        playerScroll.setPreferredSize(new Dimension(300, 300));
+
         panel.add(Box.createVerticalStrut(20));
         panel.add(welcomeText);
         panel.add(Box.createVerticalStrut(10));
         panel.add(searchBar);
-
         createButtons();
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(playerScroll);
 
         canvas.getContentPane().add(panel);
         canvas.revalidate();
         canvas.repaint();
     }
 
+    public void addToTeam() {
+        userTeam.add(players.get(searchBar.getText()));
+        playerLog.append(searchBar.getText());
+        searchBar.setText("");
+    }
+
+    public void tradingScreen() {
+        canvas.getContentPane().removeAll();
+
+        panel = new JPanel();
+
+        canvas.revalidate();
+        canvas.repaint();
+    }
 
     public void createButtons() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
@@ -73,8 +101,10 @@ public class GeneralManager {
 
         panel.add(Box.createVerticalStrut(10));
         panel.add(buttonPanel);
+        addToTeamButton.addActionListener(e -> addToTeam());
+        finalizeButton.addActionListener(e -> tradingScreen());
     }
-    
+
     public static void main(String[] args) {
         new GeneralManager();
     }
