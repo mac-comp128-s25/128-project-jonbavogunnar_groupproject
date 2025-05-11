@@ -3,9 +3,11 @@ package generalManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.MatchResult;
+
 
 public class MatchEngine {
-    public static void MatchResults(Team team1, Team team2) {
+    public static MatchResults matchResults(Team team1, Team team2) {
         int team1Off = team1.getPlayers().values().stream().mapToInt(Player :: getOffFifaRating).sum();
         int team2Off = team2.getPlayers().values().stream().mapToInt(Player :: getOffFifaRating).sum();
         int team1Def = team1.getPlayers().values().stream().mapToInt(Player :: getDefFifaRating).sum();
@@ -16,15 +18,21 @@ public class MatchEngine {
 
         int team1Goals = (int)(Math.random() * team1ScoreChance);
         int team2Goals = (int)(Math.random() * team2ScoreChance);
-        
-        generateStats(team1, team1Goals);
-        generateStats(team2, team2Goals);
 
+         List<String> team1Scorers = generateStats(team1, team1Goals);
+        List<String> team2Scorers = generateStats(team2, team2Goals);
+
+        MatchResults result = new MatchResults(team1, team2, team1Goals, team2Goals);
+        result.setTeam1Scorers(team1Scorers);
+        result.setTeam2Scorers(team2Scorers);
+        System.out.println(result);
+        return result;
     }
 
-    private static void generateStats(Team team, int goals){
+    private static List<String> generateStats(Team team, int goals){
         List<Player> playerList = new ArrayList<>(team.getPlayers().values());
         int totalOffRating = playerList.stream().mapToInt(Player::getOffFifaRating).sum();
+        List<String> goalDetails = new ArrayList<>();
 
         for (int i = 0; i < goals; i++) {
             Player scorer = weightedRandomPlayersOff(playerList, totalOffRating);
@@ -35,8 +43,9 @@ public class MatchEngine {
                 assister = weightedRandomPlayersByPosistion(playerList);
             }
             assister.setAssist(assister.getAssist() + 1);
+            goalDetails.add("Goal " + scorer.getName() + "Assist " + assister.getName());
         }
-
+        return goalDetails;
     }
 
     private static Player weightedRandomPlayersOff(List<Player> players, int totalOffRating){
@@ -74,6 +83,6 @@ public class MatchEngine {
                 return players.get(i);
             }
         }
-        return players.get(players.size() - 1);
+        return players.get(players.size() -  1);
     }
 }

@@ -52,7 +52,7 @@ public class PlayerCSVReader {
             return players;
             
         } catch (IOException e) {
-            throw new Exception("Error reading the player CSV file: " + e.getMessage(), e.getCause());
+            throw new Exception("Error reading the player CSV file: "  + e.getMessage(), e.getCause());
         }
     }
-}
+} 

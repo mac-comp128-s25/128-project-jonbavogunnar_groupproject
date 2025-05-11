@@ -1,7 +1,6 @@
 package generalManager;
 
 public class Player {
-
     private String team;
     private String name;
     private String nationality;
