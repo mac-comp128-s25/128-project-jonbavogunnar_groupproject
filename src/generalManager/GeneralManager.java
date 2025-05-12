@@ -16,6 +16,7 @@ public class GeneralManager {
     private JScrollPane playerScroll;
     private JTextArea playerLog;
     private List<Player> userTeam;
+    private Player player;
 
     public GeneralManager() {
         try {
@@ -95,11 +96,6 @@ public class GeneralManager {
     public void removeFromTeam() {
         String name = searchBar.getText();
         Player target = null;
-
-        if(name.equals("") || !players.containsKey(name)) {
-            JOptionPane.showMessageDialog(canvas, "Invalid player.");
-            return;
-        }
 
         for (Player p : userTeam) {
             if (p.getName().equalsIgnoreCase(name)) {
