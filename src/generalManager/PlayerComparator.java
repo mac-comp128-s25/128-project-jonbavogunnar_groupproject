@@ -8,8 +8,7 @@ public class PlayerComparator implements Comparator<Player> {
     private static final Map<Character, Double> POSITION_WEIGHTS = Map.of(
         'F', 1.5,
         'M', 1.2,
-        'D', 1.0,
-        'G', 0.6
+        'D', 1.0
     );
 
     private static double calculatePlayerValue(Player p) {
