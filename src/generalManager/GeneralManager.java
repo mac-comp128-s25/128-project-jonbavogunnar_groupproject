@@ -1,6 +1,7 @@
 package generalManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,7 +103,48 @@ public class GeneralManager {
         panel.add(Box.createVerticalStrut(10));
         panel.add(buttonPanel);
         addToTeamButton.addActionListener(e -> addToTeam());
-        finalizeButton.addActionListener(e -> tradingScreen());
+        finalizeButton.addActionListener(e -> {
+            if (TeamValidator.isValidTeam(userTeam)) {
+                simulateMatchScreen();
+            } else {
+                JOptionPane.showMessageDialog(canvas, "Invalid Team formation. You must have 1 Goalkeeper, 4 Defenders, 3 Midfielders, and 3 Forwards");
+            }
+        });
+    }
+
+    public void simulateMatchScreen() {
+        canvas.getContentPane().removeAll();
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        List<Player> opponentTeam = OpponentTeamGenerator.generateOpponentTeam(players);
+        MatchResults results = MatchEngine.matchResults(
+                new Team("User", mapFromList(userTeam)),
+                new Team("Opponent", mapFromList(opponentTeam))
+        );
+
+        JTextArea resultArea = new JTextArea();
+        resultArea.setEditable(false);
+        resultArea.append("Match Result: User " + results.homeGoals + " - " + results.awayGoals + " Opponent\n\n");
+
+        resultArea.append("Your Goals:\n");
+        for (String s : results.homeScorers) resultArea.append("• " + s + "\n");
+
+        resultArea.append("\nOpponent Goals:\n");
+        for (String s : results.awayScorers) resultArea.append("• " + s + "\n");
+
+        panel.add(new JScrollPane(resultArea));
+        canvas.add(panel);
+        canvas.revalidate();
+        canvas.repaint();
+    }
+
+    private Map<String, Player> mapFromList(List<Player> list) {
+        Map<String, Player> map = new HashMap<>();
+        for (Player p : list) {
+            map.put(p.getName(), p);
+        }
+        return map;
     }
 
     public static void main(String[] args) {

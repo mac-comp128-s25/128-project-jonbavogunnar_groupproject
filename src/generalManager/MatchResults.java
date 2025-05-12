@@ -25,4 +25,27 @@ public class MatchResults {
     public void setTeam2Scorers(List<String> team2Scorers){
         this.team2Scorers = team2Scorers;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Match Result: ").append(home.getName()).append(" ")
+          .append(homeGoals).append(" - ").append(awayGoals).append(" ").append(away.getName()).append("\n\n");
+
+        sb.append(home.getName()).append(" Scorers:\n");
+        if (homeScorers.isEmpty()) {
+            sb.append("  None\n");
+        } else {
+            for (String s : homeScorers) sb.append("  • ").append(s).append("\n");
+        }
+
+        sb.append("\n").append(away.getName()).append(" Scorers:\n");
+        if (awayScorers.isEmpty()) {
+            sb.append("  None\n");
+        } else {
+            for (String s : awayScorers) sb.append("  • ").append(s).append("\n");
+        }
+
+        return sb.toString();
+    }
 }
