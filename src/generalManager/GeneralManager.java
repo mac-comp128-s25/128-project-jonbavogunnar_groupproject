@@ -56,6 +56,7 @@ public class GeneralManager {
         playerLog.setEditable(false);
         playerLog.setLineWrap(true);
         playerLog.setWrapStyleWord(true);
+        playerLog.setFont(new Font("Arial", Font.PLAIN, 30));
 
         playerScroll = new JScrollPane(playerLog);
         playerScroll.setPreferredSize(new Dimension(300, 300));
@@ -75,7 +76,7 @@ public class GeneralManager {
 
     public void addToTeam() {
         userTeam.add(players.get(searchBar.getText()));
-        playerLog.append(searchBar.getText());
+        playerLog.append(players.get(searchBar.getText()) + "\n");
         searchBar.setText("");
     }
 
@@ -110,7 +111,12 @@ public class GeneralManager {
         canvas.getContentPane().removeAll();
 
         panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        
+
+        canvas.getContentPane().add(panel);
         canvas.revalidate();
         canvas.repaint();
     }
