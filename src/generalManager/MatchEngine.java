@@ -1,113 +1,87 @@
 package generalManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 
 public class MatchEngine {
-
     public static MatchResults matchResults(Team team1, Team team2) {
-        int team1Off = sumOffense(team1);
-        int team2Off = sumOffense(team2);
-        int team1Def = sumDefense(team1);
-        int team2Def = sumDefense(team2);
+        int team1Off = team1.getPlayers().values().stream().mapToInt(Player :: getOffFifaRating).sum();
+        int team2Off = team2.getPlayers().values().stream().mapToInt(Player :: getOffFifaRating).sum();
+        int team1Def = team1.getPlayers().values().stream().mapToInt(Player :: getDefFifaRating).sum();
+        int team2Def = team2.getPlayers().values().stream().mapToInt(Player :: getDefFifaRating).sum();
 
-        double team1Chance = (double) team1Off / (team2Def + 1);
-        double team2Chance = (double) team2Off / (team1Def + 1);
+        double team1ScoreChance = (double) team1Off / (team2Def + 1);
+        double team2ScoreChance = (double) team2Off / (team1Def + 1);
 
-        int goals1 = simulateGoals(team1Chance);
-        int goals2 = simulateGoals(team2Chance);
+        int team1Goals = (int)(Math.random() * team1ScoreChance);
+        int team2Goals = (int)(Math.random() * team2ScoreChance);
 
-        List<String> scorers1 = generateGoalDetails(team1, goals1);
-        List<String> scorers2 = generateGoalDetails(team2, goals2);
+         List<String> team1Scorers = generateStats(team1, team1Goals);
+        List<String> team2Scorers = generateStats(team2, team2Goals);
 
-        MatchResults result = new MatchResults(team1, team2, goals1, goals2);
-        result.homeScorers = scorers1;
-        result.awayScorers = scorers2;
-
+        MatchResults result = new MatchResults(team1, team2, team1Goals, team2Goals);
+        result.setTeam1Scorers(team1Scorers);
+        result.setTeam2Scorers(team2Scorers);
         System.out.println(result);
         return result;
     }
 
-    private static int sumOffense(Team team) {
-        int total = 0;
-        for (Player p : team.getPlayers().values()) {
-            total += p.getOffFifaRating();
-        }
-        return total;
-    }
+    private static List<String> generateStats(Team team, int goals){
+        List<Player> playerList = new ArrayList<>(team.getPlayers().values());
+        int totalOffRating = playerList.stream().mapToInt(Player::getOffFifaRating).sum();
+        List<String> goalDetails = new ArrayList<>();
 
-    private static int sumDefense(Team team) {
-        int total = 0;
-        for (Player p : team.getPlayers().values()) {
-            total += p.getDefFifaRating();
-        }
-        return total;
-    }
-
-    private static int simulateGoals(double chance) {
-        double adjusted = chance * 1.2;
-        int goals = 0;
-        while (Math.random() < (adjusted / (goals + 6))) {
-            goals++;
-        }
-        return goals;
-    }
-
-    private static List<String> generateGoalDetails(Team team, int goalCount) {
-        List<Player> players = new ArrayList<>(team.getPlayers().values());
-        int totalOff = 0;
-        for (Player p : players) totalOff += p.getOffFifaRating();
-
-        List<String> details = new ArrayList<>();
-
-        for (int i = 0; i < goalCount; i++) {
-            Player scorer = pickByOffense(players, totalOff);
+        for (int i = 0; i < goals; i++) {
+            Player scorer = weightedRandomPlayersOff(playerList, totalOffRating);
             scorer.setGoal(scorer.getGoal() + 1);
 
-            Player assist;
-            do {
-                assist = pickByPosition(players);
-            } while (assist == scorer);
-
-            assist.setAssist(assist.getAssist() + 1);
-            details.add("Goal: " + scorer.getName() + " | Assist: " + assist.getName());
+            Player assister = weightedRandomPlayersByPosistion(playerList);
+            while (assister.equals(scorer)) {
+                assister = weightedRandomPlayersByPosistion(playerList);
+            }
+            assister.setAssist(assister.getAssist() + 1);
+            goalDetails.add("Goal " + scorer.getName() + "Assist " + assister.getName());
         }
-
-        return details;
+        return goalDetails;
     }
 
-    private static Player pickByOffense(List<Player> players, int totalOff) {
-        double rand = Math.random() * totalOff;
-        double sum = 0;
+    private static Player weightedRandomPlayersOff(List<Player> players, int totalOffRating){
+        double rand = Math.random() * totalOffRating;
+        double cumulative = 0;
 
-        for (Player p : players) {
-            sum += p.getOffFifaRating();
-            if (rand < sum) return p;
+        for (Player player : players) {
+            cumulative += player.getOffFifaRating();
+            if (rand < cumulative) {
+                return player;
+            }
         }
-
         return players.get(players.size() - 1);
     }
 
-    private static Player pickByPosition(List<Player> players) {
+    private static Player weightedRandomPlayersByPosistion(List<Player> players){
         Map<String, Double> weights = Map.of(
-            "F", 0.8, 
-            "M", 1.0, 
-            "D", 0.2, 
+            "F", 0.8,
+            "M", 1.0,
+            "D", 0.2,
             "G", 0.001
         );
 
         double totalWeight = 0;
-        List<Double> cumulative = new ArrayList<>();
+        List<Double> cumulativeWeights = new ArrayList<>();
         for (Player p : players) {
-            double w = weights.getOrDefault(p.getPosition(), 0.1);
-            totalWeight += w;
-            cumulative.add(totalWeight);
+            double weight = weights.getOrDefault(p.getPosition(), 0.1);
+            totalWeight += weight;
+            cumulativeWeights.add(totalWeight);
         }
 
         double rand = Math.random() * totalWeight;
         for (int i = 0; i < players.size(); i++) {
-            if (rand < cumulative.get(i)) return players.get(i);
+            if (rand < cumulativeWeights.get(i)) {
+                return players.get(i);
+            }
         }
-
-        return players.get(players.size() - 1);
+        return players.get(players.size() -  1);
     }
 }
