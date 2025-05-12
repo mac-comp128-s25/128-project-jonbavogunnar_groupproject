@@ -17,6 +17,10 @@ public class GeneralManager {
     private JTextArea playerLog;
     private List<Player> userTeam;
     private Player player;
+    private List<Team> leagueTeams;
+    private List<List<String[]>> fixtures;
+    private int currentWeek = 0;
+    private LeagueTable leagueTable = new LeagueTable();
 
     public GeneralManager() {
         try {
@@ -35,6 +39,8 @@ public class GeneralManager {
 
         canvas.setVisible(true);
         startButton.addActionListener(e -> selectingScreen());
+
+        
     }
 
     public void selectingScreen() {
@@ -157,10 +163,14 @@ public class GeneralManager {
         finalizeButton.addActionListener(e -> {
             if (TeamValidator.isValidTeam(userTeam)) {
                 simulateMatchScreen();
+                leagueTeams = LeagueGenerator.generateLeagueTeams(players, userTeam);
+                leagueTeams.add(new Team("You", mapFromList(userTeam)));
+                fixtures = FixtureGenerator.generateSchedule(leagueTeams);
+                simulateCurrentWeek();
             } else {
                 JOptionPane.showMessageDialog(canvas, "Invalid Team formation. You must have 1 Goalkeeper, 4 Defenders, 3 Midfielders, and 3 Forwards");
             }
-        });
+        }); 
     }
 
     public void simulateMatchScreen() {
@@ -190,6 +200,35 @@ public class GeneralManager {
         canvas.repaint();
     }
 
+    public void simulateCurrentWeek() {
+    if (currentWeek >= fixtures.size()) {
+        JOptionPane.showMessageDialog(canvas, "Season is over!");
+        return;
+    }
+
+    List<String[]> weekMatches = fixtures.get(currentWeek);
+    JTextArea resultArea = new JTextArea();
+    resultArea.setEditable(false);
+
+    for (String[] match : weekMatches) {
+        Team t1 = findTeamByName(match[0]);
+        Team t2 = findTeamByName(match[1]);
+
+        MatchResults result = MatchEngine.matchResults(t1, t2);
+        leagueTable.updateTable(result);
+        resultArea.append(result.toString() + "\n\n");
+    }
+
+    leagueTable.displayTable(); // or print to console/log if preferred
+
+    JScrollPane scroll = new JScrollPane(resultArea);
+    scroll.setPreferredSize(new Dimension(800, 400));
+    JOptionPane.showMessageDialog(canvas, scroll, "Matchweek " + (currentWeek + 1), JOptionPane.INFORMATION_MESSAGE);
+
+    currentWeek++;
+}
+
+
     private Map<String, Player> mapFromList(List<Player> list) {
         Map<String, Player> map = new HashMap<>();
         for (Player p : list) {
@@ -197,6 +236,13 @@ public class GeneralManager {
         }
         return map;
     }
+
+    private Team findTeamByName(String name) {
+    for (Team t : leagueTeams) {
+        if (t.getName().equals(name)) return t;
+    }
+    return null;
+}
 
     public static void main(String[] args) {
         new GeneralManager();
