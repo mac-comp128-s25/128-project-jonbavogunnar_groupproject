@@ -108,6 +108,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return name + ": " + nationality;
+        return name + "-" + position;
     }
 }
