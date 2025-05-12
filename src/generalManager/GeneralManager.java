@@ -16,7 +16,6 @@ public class GeneralManager {
     private JScrollPane playerScroll;
     private JTextArea playerLog;
     private List<Player> userTeam;
-    private Player player;
 
     public GeneralManager() {
         try {
@@ -79,10 +78,7 @@ public class GeneralManager {
         String name = searchBar.getText();
         Player currPlayer = players.get(searchBar.getText());
 
-        if(name.equals("") || !players.containsKey(name)) {
-            JOptionPane.showMessageDialog(canvas, "Invalid player.");
-            return;
-        }
+        if (checkForInvalidPlayer(name)) return;
 
         if(!userTeam.contains(currPlayer)) {
             userTeam.add(currPlayer);
@@ -96,6 +92,8 @@ public class GeneralManager {
     public void removeFromTeam() {
         String name = searchBar.getText();
         Player target = null;
+
+        if (checkForInvalidPlayer(name)) return;
 
         for (Player p : userTeam) {
             if (p.getName().equalsIgnoreCase(name)) {
@@ -165,6 +163,7 @@ public class GeneralManager {
 
     public void simulateMatchScreen() {
         canvas.getContentPane().removeAll();
+        
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -185,7 +184,7 @@ public class GeneralManager {
         for (String s : results.awayScorers) resultArea.append("• " + s + "\n");
 
         panel.add(new JScrollPane(resultArea));
-        canvas.add(panel);
+        canvas.getContentPane().add(panel);
         canvas.revalidate();
         canvas.repaint();
     }
@@ -196,6 +195,14 @@ public class GeneralManager {
             map.put(p.getName(), p);
         }
         return map;
+    }
+
+    private boolean checkForInvalidPlayer(String name) {
+        if(name.equals("") || !players.containsKey(name)) {
+            JOptionPane.showMessageDialog(canvas, "Invalid player.");
+            return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {

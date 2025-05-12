@@ -10,7 +10,6 @@ public class Player {
     private int defFifaRating;
     private int goal;
     private int assist;
-    private int playerVal;
 
     public Player(String team, String name, String nationality, String position, int fifaRating, int offFifaRating, int defFifaRating) {
         this.team = team;
