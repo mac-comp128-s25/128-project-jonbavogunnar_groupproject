@@ -79,6 +79,33 @@ public class GeneralManager {
         searchBar.setText("");
     }
 
+    public void removeFromTeam() {
+        String name = searchBar.getText();
+        Player target = null;
+
+        for (Player p : userTeam) {
+            if (p.getName().equalsIgnoreCase(name)) {
+                target = p;
+                break;
+            }
+        }
+
+        if (target != null) {
+            userTeam.remove(target);
+            refreshPlayerLog();
+            searchBar.setText("");
+        } else {
+            JOptionPane.showMessageDialog(canvas, "Player not found in your team.");
+        }
+    }
+
+    private void refreshPlayerLog() {
+        playerLog.setText("");
+        for (Player p : userTeam) {
+            playerLog.append(p.getName() + " - " + p.getPosition() + "\n");
+        }
+    }
+
     public void tradingScreen() {
         canvas.getContentPane().removeAll();
 
@@ -91,18 +118,23 @@ public class GeneralManager {
     public void createButtons() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         JButton addToTeamButton = new JButton("Add To Team!");
+        JButton removeFromTeamButton = new JButton("Remove From Team");
         JButton finalizeButton = new JButton("Finalize!");
 
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(addToTeamButton);
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(removeFromTeamButton);
         buttonPanel.add(Box.createHorizontalStrut(10));
         buttonPanel.add(finalizeButton);
+
 
         panel.add(Box.createVerticalStrut(10));
         panel.add(buttonPanel);
         addToTeamButton.addActionListener(e -> addToTeam());
+        removeFromTeamButton.addActionListener(e -> removeFromTeam());
         finalizeButton.addActionListener(e -> {
             if (TeamValidator.isValidTeam(userTeam)) {
                 simulateMatchScreen();
