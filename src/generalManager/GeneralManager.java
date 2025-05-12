@@ -16,6 +16,7 @@ public class GeneralManager {
     private JScrollPane playerScroll;
     private JTextArea playerLog;
     private List<Player> userTeam;
+    private Player player;
 
     public GeneralManager() {
         try {
@@ -75,7 +76,7 @@ public class GeneralManager {
 
     public void addToTeam() {
         userTeam.add(players.get(searchBar.getText()));
-        playerLog.append(searchBar.getText());
+        playerLog.append(searchBar.getText() + " " + player.getPosition());
         searchBar.setText("");
     }
 

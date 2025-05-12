@@ -5,21 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 public class TradeEngine {
-    private static final Map<Character, Double> POSITION_WEIGHTS = Map.of(
-        'F', 1.5,
-        'M', 1.2,
-        'D', 1.0,
-        'G', 0.6
-    );
 
     private static final double FAIRNESS_THRESHOLD = 0.92;
-
-    private static double calculatePlayerValue(Player p) {
-        return POSITION_WEIGHTS.getOrDefault(p.getPosition(), 1.0) * p.getFifaRating();
-    }
+    private static final PlayerComparator comparator = new PlayerComparator();
 
     private static double calculateOfferValue(List<Player> players) {
-        return players.stream().mapToDouble(TradeEngine::calculatePlayerValue).sum();
+        return players.stream().mapToDouble(comparator::getValue).sum();
     }
 
     public static boolean evaluateTrade(List<Player> userOffer, List<Player> otherOffer) {
@@ -61,4 +52,4 @@ public class TradeEngine {
             System.out.println("Trade rejected. Your offer isn't strong enough.");
         }
     }
-}
+}   
