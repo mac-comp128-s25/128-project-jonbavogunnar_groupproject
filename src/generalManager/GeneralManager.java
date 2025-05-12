@@ -75,14 +75,31 @@ public class GeneralManager {
     }
 
     public void addToTeam() {
-        userTeam.add(players.get(searchBar.getText()));
-        playerLog.append(players.get(searchBar.getText()) + "\n");
+        String name = searchBar.getText();
+        Player currPlayer = players.get(searchBar.getText());
+
+        if(name.equals("") || !players.containsKey(name)) {
+            JOptionPane.showMessageDialog(canvas, "Invalid player.");
+            return;
+        }
+
+        if(!userTeam.contains(currPlayer)) {
+            userTeam.add(currPlayer);
+            playerLog.append(currPlayer + "\n");
+        } else {
+            JOptionPane.showMessageDialog(canvas, "Player is currently in your team.");
+        }
         searchBar.setText("");
     }
 
     public void removeFromTeam() {
         String name = searchBar.getText();
         Player target = null;
+
+        if(name.equals("") || !players.containsKey(name)) {
+            JOptionPane.showMessageDialog(canvas, "Invalid player.");
+            return;
+        }
 
         for (Player p : userTeam) {
             if (p.getName().equalsIgnoreCase(name)) {
