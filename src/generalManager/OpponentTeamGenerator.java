@@ -31,7 +31,6 @@ public class OpponentTeamGenerator {
             if (team.size() == 11) break;
         }
 
-        // Fallback: if not enough players by position
         if (team.size() < 11) {
             Set<String> alreadyAdded = team.stream().map(Player::getName).collect(Collectors.toSet());
             for (Player p : pool) {
@@ -41,7 +40,6 @@ public class OpponentTeamGenerator {
                 }
             }
         }
-
         return team;
     }
 }

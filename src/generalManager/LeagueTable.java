@@ -44,7 +44,13 @@ public class LeagueTable {
         }
     }
 
-    private static class TeamStats {
+    public List<Map.Entry<Team, TeamStats>> getSortedTable() {
+        List<Map.Entry<Team, TeamStats>> sorted = new ArrayList<>(table.entrySet());
+        sorted.sort((e1, e2) -> Integer.compare(e2.getValue().points, e1.getValue().points));
+        return sorted;
+    }
+
+    public static class TeamStats {
         int played = 0;
         int wins = 0;
         int draws = 0;

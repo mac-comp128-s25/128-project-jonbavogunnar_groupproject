@@ -10,7 +10,11 @@ public class TradeEngine {
     private static final PlayerComparator comparator = new PlayerComparator();
 
     private static double calculateOfferValue(List<Player> players) {
-        return players.stream().mapToDouble(comparator::getValue).sum();
+        double total = 0;
+        for (Player p : players) {
+            total += comparator.getValue(p);
+        }
+        return total;
     }
 
     public static boolean evaluateTrade(List<Player> userOffer, List<Player> otherOffer) {
@@ -22,7 +26,7 @@ public class TradeEngine {
         return userValue >= computerValue * FAIRNESS_THRESHOLD;
     }
 
-    public static void executeTrade(Team userTeam, Team otherTeam, List<String> userPlayersName, List<String> otherPlayersName){
+    public static boolean executeTrade(Team userTeam, Team otherTeam, List<String> userPlayersName, List<String> otherPlayersName){
         List<Player> userOffer = new ArrayList<>();
         List<Player> otherOffer = new ArrayList<>();
 
@@ -47,9 +51,9 @@ public class TradeEngine {
                 userTeam.getPlayers().put(p.getName(), p);
             }
 
-            System.out.println("Trade accepted!");
+            return true;
         } else {
-            System.out.println("Trade rejected. Your offer isn't strong enough.");
+            return false;
         }
     }
 }   

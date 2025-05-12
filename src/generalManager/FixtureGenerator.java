@@ -1,29 +1,40 @@
 package generalManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FixtureGenerator {
+
     public static List<List<String[]>> generateSchedule(List<Team> teams) {
-        List<List<String[]>> weeklySchedule = new ArrayList<>();
-        int totalWeeks = teams.size() - 1;
-        int totalTeams = teams.size();
+        List<List<String[]>> fullSchedule = new ArrayList<>();
 
-        List<Team> rotating = new ArrayList<>(teams);
-        Team fixed = rotating.remove(0);
+        int numTeams = teams.size();
+        int numWeeks = numTeams - 1;
 
-        for (int week = 0; week < totalWeeks; week++) {
+        List<Team> rotatingTeams = new ArrayList<>(teams);
+        Team fixedTeam = rotatingTeams.remove(0);
+
+        for (int week = 0; week < numWeeks; week++) {
             List<String[]> weekMatches = new ArrayList<>();
-            for (int i = 0; i < totalTeams / 2; i++) {
-                Team home = (i == 0) ? fixed : rotating.get(i - 1);
-                Team away = rotating.get(rotating.size() - i - 1);
+
+            for (int i = 0; i < numTeams / 2; i++) {
+                Team home, away;
+
+                if (i == 0) {
+                    home = fixedTeam;
+                    away = rotatingTeams.get(rotatingTeams.size() - 1);
+                } else {
+                    home = rotatingTeams.get(i - 1);
+                    away = rotatingTeams.get(rotatingTeams.size() - i - 1);
+                }
+
                 weekMatches.add(new String[]{home.getName(), away.getName()});
             }
-            Collections.rotate(rotating, 1);
-            weeklySchedule.add(weekMatches);
+
+            Collections.rotate(rotatingTeams, 1);
+            fullSchedule.add(weekMatches);
         }
 
-        return weeklySchedule;
+        return fullSchedule;
     }
 }
+
