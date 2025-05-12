@@ -1,7 +1,5 @@
 package generalManager;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -9,7 +7,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class AutoSuggestUtils implements KeyListener {
+public class AutoSuggestUtils {
     public static void attachAutoSuggest(JTextField textField, Map<String, Player> dataMap) {
         JPopupMenu suggestionsPopupMenu = new JPopupMenu();
         suggestionsPopupMenu.setFocusable(false);
@@ -61,23 +59,5 @@ public class AutoSuggestUtils implements KeyListener {
                 suggestionsPopupMenu.show(textField, 0, textField.getHeight());
             }
         });
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'keyPressed'");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
     }
 }
